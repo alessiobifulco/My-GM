@@ -1,2 +1,2 @@
 # My-GM
-progetto per corso di basi di dati
+Progetto per corso di Basi di Dati
