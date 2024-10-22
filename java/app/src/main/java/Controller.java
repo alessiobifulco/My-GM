@@ -1,5 +1,5 @@
-import model.Model;
 import data.DAOUtils;
+import model.Model;
 
 public class Controller {
 

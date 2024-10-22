@@ -9,8 +9,6 @@ public class DAOUtils {
 
     public static Connection localMySQLConnection(String database, String username, String password) {
         try {
-            // Carica il driver MySQL
-            Class.forName("com.mysql.cj.jdbc.Driver");
 
             var host = "localhost";
             var port = "3306";

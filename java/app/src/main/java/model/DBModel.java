@@ -3,6 +3,8 @@ package model;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.Objects;
+
+import data.DAOException;
 import data.*;
 
 public class DBModel implements Model {
