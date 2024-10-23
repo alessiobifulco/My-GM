@@ -1,6 +1,5 @@
 {
     "java.project.sourcePaths": [
-        "src",
-        "java/app/src/main/java/db_lab"
+        "java/app/src/main/java"
     ]
 }
