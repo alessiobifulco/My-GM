@@ -4,15 +4,15 @@ INSERT INTO gm (nome, cognome, email, password, id_squadra) VALUES
 ('John', 'Doe', 'johndoe@example.com', 'password123', 1),
 ('Jane', 'Smith', 'janesmith@example.com', 'password456', 2);
 
--- Popolamento tabella Squadra
-INSERT INTO squadra (nome, città, numero_giocatori, id_gm, id_staff) VALUES 
-('Lakers', 'Los Angeles', 15, 1, 1),
-('Warriors', 'San Francisco', 14, 2, 2);
-
 -- Popolamento tabella Staff
 INSERT INTO staff (nome, ruolo, email) VALUES 
 ('Steve', 'Allenatore', 'steve@lakers.com'),
 ('Mike', 'Allenatore', 'mike@warriors.com');
+
+-- Popolamento tabella Squadra
+INSERT INTO squadra (nome, città, numero_giocatori, id_gm, id_staff) VALUES 
+('Lakers', 'Los Angeles', 15, 1, 1),
+('Warriors', 'San Francisco', 14, 2, 2);
 
 -- Popolamento tabella Giocatore
 INSERT INTO giocatore (nome, cognome, età, posizione, esperienza, valutazione, freeagent, id_squadra) VALUES 

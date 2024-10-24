@@ -1,5 +1,11 @@
+-- Creazione del database NBA_System se non esiste già
+CREATE DATABASE IF NOT EXISTS NBA_System;
 
-CREATE TABLE gm (
+-- Selezione del database NBA_System
+USE NBA_System;
+
+-- Creazione della tabella gm
+CREATE TABLE IF NOT EXISTS gm (
     id_gm INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     cognome VARCHAR(100) NOT NULL,
@@ -8,7 +14,16 @@ CREATE TABLE gm (
     id_squadra INT UNIQUE
 );
 
-CREATE TABLE squadra (
+-- Creazione della tabella staff
+CREATE TABLE IF NOT EXISTS staff (
+    id_staff INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    ruolo VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Creazione della tabella squadra
+CREATE TABLE IF NOT EXISTS squadra (
     id_squadra INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     città VARCHAR(100) NOT NULL,
@@ -19,14 +34,8 @@ CREATE TABLE squadra (
     FOREIGN KEY (id_staff) REFERENCES staff(id_staff)
 );
 
-CREATE TABLE staff (
-    id_staff INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    ruolo VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL
-);
-
-CREATE TABLE giocatore (
+-- Creazione della tabella giocatore
+CREATE TABLE IF NOT EXISTS giocatore (
     id_giocatore INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     cognome VARCHAR(100) NOT NULL,
@@ -39,7 +48,8 @@ CREATE TABLE giocatore (
     FOREIGN KEY (id_squadra) REFERENCES squadra(id_squadra)
 );
 
-CREATE TABLE contratto (
+-- Creazione della tabella contratto
+CREATE TABLE IF NOT EXISTS contratto (
     id_contratto INT AUTO_INCREMENT PRIMARY KEY,
     durata INT NOT NULL,
     stipendio DECIMAL(10, 2) NOT NULL,
@@ -48,7 +58,8 @@ CREATE TABLE contratto (
     data_contratto DATE
 );
 
-CREATE TABLE firma (
+-- Creazione della tabella firma
+CREATE TABLE IF NOT EXISTS firma (
     id_firma INT AUTO_INCREMENT PRIMARY KEY,
     data_firma DATE,
     id_giocatore INT,
@@ -57,14 +68,16 @@ CREATE TABLE firma (
     FOREIGN KEY (id_contratto) REFERENCES contratto(id_contratto)
 );
 
-CREATE TABLE sottoscrizione (
+-- Creazione della tabella sottoscrizione
+CREATE TABLE IF NOT EXISTS sottoscrizione (
     id_sottoscrizione INT AUTO_INCREMENT PRIMARY KEY,
     id_contratto INT,
     data_sottoscrizione DATE,
     FOREIGN KEY (id_contratto) REFERENCES contratto(id_contratto)
 );
 
-CREATE TABLE scambio (
+-- Creazione della tabella scambio
+CREATE TABLE IF NOT EXISTS scambio (
     id_scambio INT AUTO_INCREMENT PRIMARY KEY,
     id_giocatore_a INT,
     id_giocatore_b INT,
@@ -79,7 +92,8 @@ CREATE TABLE scambio (
     FOREIGN KEY (id_squadra_b) REFERENCES squadra(id_squadra)
 );
 
-CREATE TABLE allenamento (
+-- Creazione della tabella allenamento
+CREATE TABLE IF NOT EXISTS allenamento (
     id_allenamento INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
     data DATE,
@@ -88,7 +102,8 @@ CREATE TABLE allenamento (
     FOREIGN KEY (id_squadra) REFERENCES squadra(id_squadra)
 );
 
-CREATE TABLE esercizio (
+-- Creazione della tabella esercizio
+CREATE TABLE IF NOT EXISTS esercizio (
     id_esercizio INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
     descrizione TEXT,
