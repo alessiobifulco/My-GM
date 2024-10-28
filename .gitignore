@@ -20,3 +20,7 @@
 # Ignora le directory di output di Gradle
 /.gradle/
 /out/
+# Ignora la directory .gradle
+.gradle/
+# Ignora i file di blocco di Gradle
+*.lock
