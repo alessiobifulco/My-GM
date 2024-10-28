@@ -1,0 +1,22 @@
+# Ignora le directory di build
+/build/
+*/build/
+
+# Ignora i file di log
+*.log
+
+# Ignora i file temporanei
+*.tmp
+*.temp
+
+# Ignora le configurazioni specifiche dell'IDE
+/.idea/
+/*.iml
+
+# Ignora i file compilati
+*.class
+*.jar
+
+# Ignora le directory di output di Gradle
+/.gradle/
+/out/
