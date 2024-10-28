@@ -22,5 +22,10 @@
 /out/
 # Ignora la directory .gradle
 .gradle/
+
+# Ignora le directory di build
+/build/
+*/build/
+
 # Ignora i file di blocco di Gradle
 *.lock
