@@ -1,7 +1,7 @@
 @if "%DEBUG%" == "" @echo off
 @rem ##########################################################################
 @rem
-@rem  Java startup script for Windows
+@rem  java startup script for Windows
 @rem
 @rem ##########################################################################
 
@@ -63,9 +63,9 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\Java-all.jar
+set CLASSPATH=%APP_HOME%\lib\java-all.jar
 
-@rem Execute Java
+@rem Execute java
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %JAVA_OPTS%  -jar "%CLASSPATH%" %CMD_LINE_ARGS%
 
 :end

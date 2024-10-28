@@ -56,9 +56,7 @@ public final class Queries {
     public static final String INSERT_SVINCOLO =
         "INSERT INTO svincolo (id_giocatore, data_svincolo) VALUES (?, ?)";
 
-    // Altre query (aggiungere secondo necessità)
-    public static final String UPDATE_ODM =
-        "UPDATE odm SET ..."; // Definisci qui la tua logica di aggiornamento
+   
 
     public static final String SELECT_FREE_AGENTS =
         "SELECT * FROM giocatore WHERE freeagent = TRUE";

@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    implementation("mysql:mysql-connector-java:8.0.29")
+    implementation("mysql:mysql-connector-java:8.0.33")
 }
 
 application {

@@ -17,13 +17,7 @@ public class DBModel implements Model {
 
     @Override
     public void updateOdM() {
-        try (
-            var statement = connection.prepareStatement(Queries.UPDATE_ODM);
-        ) {
-            statement.execute();
-        } catch (SQLException e) {
-            throw new DAOException("Error updating OdM", e);
-        }
+        
     }
 
     // Implementazione dei metodi per le Firme

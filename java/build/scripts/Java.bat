@@ -19,7 +19,7 @@
 @if "%DEBUG%"=="" @echo off
 @rem ##########################################################################
 @rem
-@rem  Java startup script for Windows
+@rem  java startup script for Windows
 @rem
 @rem ##########################################################################
 
@@ -70,10 +70,10 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\Java.jar;%APP_HOME%\lib\mysql-connector-java-8.0.29.jar;%APP_HOME%\lib\protobuf-java-3.19.4.jar
+set CLASSPATH=%APP_HOME%\lib\java.jar;%APP_HOME%\lib\mysql-connector-j-8.0.33.jar;%APP_HOME%\lib\protobuf-java-3.21.9.jar
 
 
-@rem Execute Java
+@rem Execute java
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %JAVA_OPTS%  -classpath "%CLASSPATH%" Main %*
 
 :end
