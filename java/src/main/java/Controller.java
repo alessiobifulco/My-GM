@@ -1,4 +1,3 @@
-import data.DAOUtils;
 import model.Model;
 
 public class Controller {
@@ -12,7 +11,6 @@ public class Controller {
     }
 
     public void homePage() {
-        model.updateOdM();
     }
 
     public View getView() {

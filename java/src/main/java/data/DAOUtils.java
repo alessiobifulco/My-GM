@@ -13,7 +13,9 @@ public class DAOUtils {
             var port = "3306";
             var connectionString = "jdbc:mysql://" + host + ":" + port + "/" + database;
 
+            
             return DriverManager.getConnection(connectionString, username, password);
+            
         } catch (Exception e) {
             throw new DAOException(e);
         }

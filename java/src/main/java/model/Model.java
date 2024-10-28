@@ -1,43 +1,59 @@
 package model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import data.*;
+
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 
 public interface Model {
 
+    // Factory Method per creare un'istanza di DBModel con una connessione al
+    // database
     public static Model fromConnection(Connection connection) {
         return new DBModel(connection);
     }
 
-    void updateOdM();
+    // Firme di contratti
+    void firmaGiocatore(String dataFirma, int idGiocatore, int idContratto) throws SQLException;
 
-    // Metodi per gestire le Firme
-    void insertFirma(String dataFirma, int idGiocatore, int idContratto) throws SQLException;
+    List<Firma> getFirmePerGiocatore(int idGiocatore) throws SQLException;
 
-    ResultSet getFirmePerGiocatore(int idGiocatore) throws SQLException;
+    void aggiornaDataFirma(String dataFirma, int idGiocatore, int idContratto) throws SQLException;
 
-    void updateDataFirma(String dataFirma, int idGiocatore, int idContratto) throws SQLException;
+    // Scambi di giocatori
+    void scambiaGiocatori(int idGiocatoreA, int idGiocatoreB, int idSquadraA, int idSquadraB,
+            String dataScambio, String dettagli, String stato) throws SQLException;
 
-    // Metodi per gestire gli Scambi
-    void insertScambio(int idGiocatoreA, int idGiocatoreB, int idSquadraA, int idSquadraB) throws SQLException;
+    List<Scambio> getScambiTraSquadre(int idSquadraA, int idSquadraB) throws SQLException;
 
-    ResultSet getScambi(int idSquadraA, int idSquadraB) throws SQLException;
+    void aggiornaStatoScambio(String stato, int idScambio) throws SQLException;
 
-    // Metodi per gestire i Giocatori
-    void insertGiocatore(String nome, String cognome, int eta, String posizione, int esperienza, int valutazione, int idContratto) throws SQLException;
+    // Allenamenti
+    void inserisciAllenamento(String nome, String data, String tipo, int idSquadra) throws SQLException;
 
-    ResultSet getGiocatori(int idSquadra) throws SQLException;
+    List<Allenamento> getAllenamentiPerSquadra(int idSquadra) throws SQLException;
 
-    void updateGiocatore(int idGiocatore, String nome, String cognome, int eta, String posizione, int esperienza, int valutazione) throws SQLException;
+    void aggiornaTipoAllenamento(String tipo, int idAllenamento) throws SQLException;
 
-    // Metodi per gestire gli Allenamenti
-    void insertAllenamento(String nome, String data, String tipo, int idSquadra) throws SQLException;
+    // Monitoraggio dei Free Agent
+    List<Giocatore> getFreeAgent() throws SQLException;
 
-    ResultSet getAllenamenti(int idSquadra) throws SQLException;
+    void associaFreeAgent(int idGiocatore, int idSquadra) throws SQLException;
 
-    // Metodi per gestire gli Esercizi
-    void insertEsercizio(String nome, String descrizione, int difficolta) throws SQLException;
+    List<Giocatore> getFreeAgentPerRuolo(String ruolo) throws SQLException;
 
-    ResultSet getEsercizi() throws SQLException;
+    List<Giocatore> getGiocatoriPerSquadra(int idSquadra) throws SQLException;
+
+    // Squadra (solo selezione)
+    Squadra getSquadra(int idSquadra) throws SQLException;
+
+    // Esercizio
+    void inserisciEsercizio(String nome, String descrizione) throws SQLException;
+
+    List<Esercizio> getAllEsercizi() throws SQLException;
+
+    void aggiornaEsercizio(int idEsercizio, String nome, String descrizione) throws SQLException;
+
+    void eliminaEsercizio(int idEsercizio) throws SQLException;
 }
