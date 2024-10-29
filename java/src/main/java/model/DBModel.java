@@ -126,14 +126,24 @@ public class DBModel implements Model {
         }
     }
 
-    // Monitoraggio dei Free Agent
+    // Metodo per recuperare i free agent
     public List<Giocatore> getFreeAgent() throws SQLException {
         List<Giocatore> freeAgents = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_FREE_AGENT);
                 ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                freeAgents.add(new Giocatore(resultSet.getInt("id_giocatore"), resultSet.getString("nome"),
-                        resultSet.getString("ruolo"), resultSet.getDouble("valutazione"), true));
+                // Recupera la categoria come stringa
+                String categoriaStr = resultSet.getString("categoria");
+                Categoria categoria = Categoria.valueOf(categoriaStr.toUpperCase()); // Converti la stringa in enum
+
+                freeAgents.add(new Giocatore(
+                        resultSet.getInt("id_giocatore"),
+                        resultSet.getString("nome"),
+                        categoriaStr, // o usa categoria.name() se preferisci il nome dell'enum
+                        resultSet.getDouble("valutazione"),
+                        true, // Free agent
+                        categoria // Passa direttamente l'enum
+                ));
             }
         }
         return freeAgents;
@@ -154,22 +164,43 @@ public class DBModel implements Model {
             statement.setString(1, ruolo);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    freeAgents.add(new Giocatore(resultSet.getInt("id_giocatore"), resultSet.getString("nome"),
-                            ruolo, resultSet.getDouble("valutazione"), true));
+                    // Recupera la categoria come stringa
+                    String categoriaStr = resultSet.getString("categoria");
+                    Categoria categoria = Categoria.valueOf(categoriaStr.toUpperCase()); // Converti la stringa in enum
+
+                    freeAgents.add(new Giocatore(
+                            resultSet.getInt("id_giocatore"),
+                            resultSet.getString("nome"),
+                            ruolo, // Usa il ruolo passato come argomento
+                            resultSet.getDouble("valutazione"), // Assicurati che questo sia un double
+                            true, // Free agent
+                            categoria // Passa direttamente l'enum
+                    ));
                 }
             }
         }
         return freeAgents;
     }
 
+    // Metodo per recuperare i giocatori per squadra
     public List<Giocatore> getGiocatoriPerSquadra(int idSquadra) throws SQLException {
         List<Giocatore> giocatori = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_GIOCATORI_PER_SQUADRA)) {
             statement.setInt(1, idSquadra);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    giocatori.add(new Giocatore(resultSet.getInt("id_giocatore"), resultSet.getString("nome"),
-                            resultSet.getString("ruolo"), resultSet.getDouble("valutazione"), false));
+                    // Recupera la categoria come stringa
+                    String categoriaStr = resultSet.getString("categoria");
+                    Categoria categoria = Categoria.valueOf(categoriaStr.toUpperCase()); // Converti la stringa in enum
+
+                    giocatori.add(new Giocatore(
+                            resultSet.getInt("id_giocatore"),
+                            resultSet.getString("nome"),
+                            categoriaStr, // o usa categoria.name() se preferisci il nome dell'enum
+                            resultSet.getDouble("valutazione"),
+                            false, // Non è un free agent
+                            categoria // Passa direttamente l'enum
+                    ));
                 }
             }
         }

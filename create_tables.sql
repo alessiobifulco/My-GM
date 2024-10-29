@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS giocatore (
     valutazione INT,
     freeagent BOOLEAN DEFAULT TRUE,
     id_squadra INT,
+    categoria VARCHAR(50), -- Aggiunta della colonna categoria
     FOREIGN KEY (id_squadra) REFERENCES squadra(id_squadra)
 );
 

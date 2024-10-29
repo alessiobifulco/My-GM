@@ -21,12 +21,27 @@ public class Queries {
     public static final String UPDATE_FREE_AGENT = "UPDATE giocatore SET id_squadra = ?, freeagent = false WHERE id_giocatore = ?";
     public static final String SELECT_FREE_AGENT_PER_RUOLO = "SELECT * FROM giocatore WHERE freeagent = true AND ruolo = ?";
     public static final String SELECT_GIOCATORI_PER_SQUADRA = "SELECT * FROM giocatore WHERE id_squadra = ?";
-    // Query per Giocatore
+
+    // Query per aggiungere e rimuovere giocatori
+    public static final String INSERT_GIOCATORE = "INSERT INTO giocatore (nome, ruolo, valutazione, freeagent, categoria) VALUES (?, ?, ?, ?, ?)";
+    public static final String DELETE_GIOCATORE = "DELETE FROM giocatore WHERE id_giocatore = ?";
     public static final String SELECT_GIOCATORE_BY_ID = "SELECT * FROM giocatore WHERE id_giocatore = ?";
     public static final String UPDATE_VALUTAZIONE_GIOCATORE = "UPDATE giocatore SET valutazione = ? WHERE id_giocatore = ?";
 
     // Query per Squadra
     public static final String SELECT_SQUADRA = "SELECT nome, citta, numero_giocatori, id_gm, id_staff FROM squadra WHERE id_squadra = ?";
+
+    // Query per aggiungere e rimuovere squadre
+    public static final String INSERT_SQUADRA = "INSERT INTO squadra (nome, citta, numero_giocatori, id_gm, id_staff) VALUES (?, ?, ?, ?, ?)";
+    public static final String DELETE_SQUADRA = "DELETE FROM squadra WHERE id_squadra = ?";
+
+    // Query per GM
+    public static final String INSERT_GM = "INSERT INTO gm (nome, email, password) VALUES (?, ?, ?)";
+    public static final String DELETE_GM = "DELETE FROM gm WHERE id_gm = ?";
+
+    // Query per Staff
+    public static final String INSERT_STAFF = "INSERT INTO staff (nome, ruolo) VALUES (?, ?)";
+    public static final String DELETE_STAFF = "DELETE FROM staff WHERE id_staff = ?";
 
     // Query per Esercizio
     public static final String INSERT_ESERCIZIO = "INSERT INTO esercizio (nome, descrizione) VALUES (?, ?)";
