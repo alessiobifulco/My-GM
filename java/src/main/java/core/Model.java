@@ -1,6 +1,7 @@
-package model;
+package core;
 
 import data.*;
+import model.DBModel;
 
 import java.sql.Connection;
 import java.sql.SQLException;

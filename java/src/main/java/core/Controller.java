@@ -1,6 +1,6 @@
-import java.sql.SQLException;
+package core;
 
-import model.Model;
+import java.sql.SQLException;
 
 public class Controller {
 
