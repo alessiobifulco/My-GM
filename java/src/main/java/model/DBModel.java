@@ -21,160 +21,153 @@ public class DBModel implements Model {
         this.connection = connection;
     }
 
-    // Firme di contratti
-    public void firmaGiocatore(String dataFirma, int idGiocatore, int idContratto) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.INSERT_FIRMA)) {
-            statement.setString(1, dataFirma);
-            statement.setInt(2, idGiocatore);
-            statement.setInt(3, idContratto);
+    public void signPlayer(String signingDate, int playerId, int contractId) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.INSERT_SIGN)) {
+            statement.setString(1, signingDate);
+            statement.setInt(2, playerId);
+            statement.setInt(3, contractId);
             statement.executeUpdate();
         }
     }
 
-    public List<Firma> getFirmePerGiocatore(int idGiocatore) throws SQLException {
-        List<Firma> firme = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_FIRME_PER_GIOCATORE)) {
-            statement.setInt(1, idGiocatore);
+    public List<Sign> getSigningsForPlayer(int playerId) throws SQLException {
+        List<Sign> signings = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_SIGNS_FOR_PLAYER)) {
+            statement.setInt(1, playerId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    firme.add(new Firma(resultSet.getInt("id_firma"), resultSet.getString("data_firma"), idGiocatore,
-                            resultSet.getInt("id_contratto")));
+                    signings.add(new Sign(resultSet.getInt("id_signing"), resultSet.getString("signing_date"), playerId,
+                            resultSet.getInt("contract_id")));
                 }
             }
         }
-        return firme;
+        return signings;
     }
 
-    public void aggiornaDataFirma(String dataFirma, int idGiocatore, int idContratto) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_DATA_FIRMA)) {
-            statement.setString(1, dataFirma);
-            statement.setInt(2, idGiocatore);
-            statement.setInt(3, idContratto);
+    public void updateSigningDate(String signingDate, int playerId, int contractId) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_SIGN_DATE)) {
+            statement.setString(1, signingDate);
+            statement.setInt(2, playerId);
+            statement.setInt(3, contractId);
             statement.executeUpdate();
         }
     }
 
-    // Scambi di giocatori
-    public void scambiaGiocatori(int idGiocatoreA, int idGiocatoreB, int idSquadraA, int idSquadraB, String dataScambio,
-            String dettagli, String stato) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.INSERT_SCAMBIO)) {
-            statement.setInt(1, idGiocatoreA);
-            statement.setInt(2, idGiocatoreB);
-            statement.setInt(3, idSquadraA);
-            statement.setInt(4, idSquadraB);
-            statement.setString(5, dataScambio);
-            statement.setString(6, dettagli);
-            statement.setString(7, stato);
+    public void tradePlayers(int playerAId, int playerBId, int teamAId, int teamBId, String tradeDate,
+                             String details, String status) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.INSERT_TRADE)) {
+            statement.setInt(1, playerAId);
+            statement.setInt(2, playerBId);
+            statement.setInt(3, teamAId);
+            statement.setInt(4, teamBId);
+            statement.setString(5, tradeDate);
+            statement.setString(6, details);
+            statement.setString(7, status);
             statement.executeUpdate();
         }
     }
 
-    public List<Scambio> getScambiTraSquadre(int idSquadraA, int idSquadraB) throws SQLException {
-        List<Scambio> scambi = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_SCAMBI_BETWEEN_SQUADRE)) {
-            statement.setInt(1, idSquadraA);
-            statement.setInt(2, idSquadraB);
+    public List<Trade> getTradesBetweenTeams(int teamAId, int teamBId) throws SQLException {
+        List<Trade> trades = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_TRADES_BETWEEN_TEAMS)) {
+            statement.setInt(1, teamAId);
+            statement.setInt(2, teamBId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    scambi.add(new Scambio(resultSet.getInt("id_scambio"), resultSet.getInt("id_giocatore_a"),
-                            resultSet.getInt("id_giocatore_b"), resultSet.getString("data_scambio"),
-                            resultSet.getString("dettagli"), resultSet.getString("stato")));
+                    trades.add(new Trade(resultSet.getInt("id_trade"), resultSet.getInt("id_player_a"),
+                            resultSet.getInt("id_player_b"), resultSet.getString("trade_date"),
+                            resultSet.getString("details"), resultSet.getString("status")));
                 }
             }
         }
-        return scambi;
+        return trades;
     }
 
-    public void aggiornaStatoScambio(String stato, int idScambio) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_STATO_SCAMBIO)) {
-            statement.setString(1, stato);
-            statement.setInt(2, idScambio);
+    public void updateTradeStatus(String status, int tradeId) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_TRADE_STATUS)) {
+            statement.setString(1, status);
+            statement.setInt(2, tradeId);
             statement.executeUpdate();
         }
     }
 
-    // Allenamenti
-    public void inserisciAllenamento(String nome, String data, String tipo, int idSquadra) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.INSERT_ALLENAMENTO)) {
-            statement.setString(1, nome);
-            statement.setString(2, data);
-            statement.setString(3, tipo);
-            statement.setInt(4, idSquadra);
+    public void insertTraining(String name, String date, String type, int teamId) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.INSERT_TRAINING)) {
+            statement.setString(1, name);
+            statement.setString(2, date);
+            statement.setString(3, type);
+            statement.setInt(4, teamId);
             statement.executeUpdate();
         }
     }
 
-    public List<Allenamento> getAllenamentiPerSquadra(int idSquadra) throws SQLException {
-        List<Allenamento> allenamenti = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_ALLENAMENTI_PER_SQUADRA)) {
-            statement.setInt(1, idSquadra);
+    public List<Training> getTrainingsByTeam(int teamId) throws SQLException {
+        List<Training> trainings = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_TRAININGS_BY_TEAM)) {
+            statement.setInt(1, teamId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    allenamenti.add(new Allenamento(resultSet.getInt("id_allenamento"), resultSet.getString("nome"),
-                            resultSet.getString("data"), resultSet.getString("tipo"), idSquadra));
+                    trainings.add(new Training(resultSet.getInt("id_training"), resultSet.getString("name"),
+                            resultSet.getString("date"), resultSet.getString("type"), teamId));
                 }
             }
         }
-        return allenamenti;
+        return trainings;
     }
 
-    public void aggiornaTipoAllenamento(String tipo, int idAllenamento) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_TIPO_ALLENAMENTO)) {
-            statement.setString(1, tipo);
-            statement.setInt(2, idAllenamento);
+    public void updateTrainingType(String type, int trainingId) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_TRAINING_TYPE)) {
+            statement.setString(1, type);
+            statement.setInt(2, trainingId);
             statement.executeUpdate();
         }
     }
 
-    // Metodo per recuperare i free agent
-    public List<Giocatore> getFreeAgent() throws SQLException {
-        List<Giocatore> freeAgents = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_FREE_AGENT);
-                ResultSet resultSet = statement.executeQuery()) {
+    public List<Player> getFreeAgents() throws SQLException {
+        List<Player> freeAgents = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_FREE_AGENTS);
+             ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                // Recupera la categoria come stringa
-                String categoriaStr = resultSet.getString("categoria");
-                Categoria categoria = Categoria.valueOf(categoriaStr.toUpperCase()); // Converti la stringa in enum
+                String categoryStr = resultSet.getString("category");
+                Category category = Category.valueOf(categoryStr.toUpperCase());
 
-                freeAgents.add(new Giocatore(
-                        resultSet.getInt("id_giocatore"),
-                        resultSet.getString("nome"),
-                        categoriaStr, // o usa categoria.name() se preferisci il nome dell'enum
-                        resultSet.getDouble("valutazione"),
-                        true, // Free agent
-                        categoria // Passa direttamente l'enum
+                freeAgents.add(new Player(
+                        resultSet.getInt("id_player"),
+                        resultSet.getString("name"),
+                        categoryStr,
+                        resultSet.getDouble("rating"),
+                        true,
+                        category
                 ));
             }
         }
         return freeAgents;
     }
 
-    public void associaFreeAgent(int idGiocatore, int idSquadra) throws SQLException {
+    public void associateFreeAgent(int playerId, int teamId) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_FREE_AGENT)) {
-            statement.setInt(1, idSquadra);
-            statement.setInt(2, idGiocatore);
+            statement.setInt(1, teamId);
+            statement.setInt(2, playerId);
             statement.executeUpdate();
         }
     }
 
-    // Query per ottenere free agent in base al ruolo
-    public List<Giocatore> getFreeAgentPerRuolo(String ruolo) throws SQLException {
-        List<Giocatore> freeAgents = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_FREE_AGENT_PER_RUOLO)) {
-            statement.setString(1, ruolo);
+    public List<Player> getFreeAgentsByRole(String role) throws SQLException {
+        List<Player> freeAgents = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_FREE_AGENTS_BY_ROLE)) {
+            statement.setString(1, role);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    // Recupera la categoria come stringa
-                    String categoriaStr = resultSet.getString("categoria");
-                    Categoria categoria = Categoria.valueOf(categoriaStr.toUpperCase()); // Converti la stringa in enum
+                    String categoryStr = resultSet.getString("category");
+                    Category category = Category.valueOf(categoryStr.toUpperCase());
 
-                    freeAgents.add(new Giocatore(
-                            resultSet.getInt("id_giocatore"),
-                            resultSet.getString("nome"),
-                            ruolo, // Usa il ruolo passato come argomento
-                            resultSet.getDouble("valutazione"), // Assicurati che questo sia un double
-                            true, // Free agent
-                            categoria // Passa direttamente l'enum
+                    freeAgents.add(new Player(
+                            resultSet.getInt("id_player"),
+                            resultSet.getString("name"),
+                            role,
+                            resultSet.getDouble("rating"),
+                            true,
+                            category
                     ));
                 }
             }
@@ -182,42 +175,39 @@ public class DBModel implements Model {
         return freeAgents;
     }
 
-    // Metodo per recuperare i giocatori per squadra
-    public List<Giocatore> getGiocatoriPerSquadra(int idSquadra) throws SQLException {
-        List<Giocatore> giocatori = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_GIOCATORI_PER_SQUADRA)) {
-            statement.setInt(1, idSquadra);
+    public List<Player> getPlayersByTeam(int teamId) throws SQLException {
+        List<Player> players = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_PLAYERS_BY_TEAM)) {
+            statement.setInt(1, teamId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    // Recupera la categoria come stringa
-                    String categoriaStr = resultSet.getString("categoria");
-                    Categoria categoria = Categoria.valueOf(categoriaStr.toUpperCase()); // Converti la stringa in enum
+                    String categoryStr = resultSet.getString("category");
+                    Category category = Category.valueOf(categoryStr.toUpperCase());
 
-                    giocatori.add(new Giocatore(
-                            resultSet.getInt("id_giocatore"),
-                            resultSet.getString("nome"),
-                            categoriaStr, // o usa categoria.name() se preferisci il nome dell'enum
-                            resultSet.getDouble("valutazione"),
-                            false, // Non è un free agent
-                            categoria // Passa direttamente l'enum
+                    players.add(new Player(
+                            resultSet.getInt("id_player"),
+                            resultSet.getString("name"),
+                            categoryStr,
+                            resultSet.getDouble("rating"),
+                            false,
+                            category
                     ));
                 }
             }
         }
-        return giocatori;
+        return players;
     }
 
-    // Squadra (solo selezione)
-    public Squadra getSquadra(int idSquadra) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_SQUADRA)) {
-            statement.setInt(1, idSquadra);
+    public Team getTeam(int teamId) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_TEAM_BY_ID)) {
+            statement.setInt(1, teamId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return new Squadra(
-                            idSquadra,
-                            resultSet.getString("nome"),
-                            resultSet.getString("citta"),
-                            resultSet.getInt("numero_giocatori"),
+                    return new Team(
+                            teamId,
+                            resultSet.getString("name"),
+                            resultSet.getString("city"),
+                            resultSet.getInt("number_of_players"),
                             resultSet.getInt("id_gm"),
                             resultSet.getInt("id_staff"));
                 }
@@ -226,39 +216,38 @@ public class DBModel implements Model {
         return null;
     }
 
-    // Esercizio
-    public void inserisciEsercizio(String nome, String descrizione) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.INSERT_ESERCIZIO)) {
-            statement.setString(1, nome);
-            statement.setString(2, descrizione);
+    public void insertExercise(String name, String description) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.INSERT_EXERCISE)) {
+            statement.setString(1, name);
+            statement.setString(2, description);
             statement.executeUpdate();
         }
     }
 
-    public List<Esercizio> getAllEsercizi() throws SQLException {
-        List<Esercizio> esercizi = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_ALL_ESERCIZI);
-                ResultSet resultSet = statement.executeQuery()) {
+    public List<Exercise> getAllExercises() throws SQLException {
+        List<Exercise> exercises = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_ALL_EXERCISES);
+             ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                esercizi.add(new Esercizio(resultSet.getInt("id_esercizio"), resultSet.getString("nome"),
-                        resultSet.getString("descrizione")));
+                exercises.add(new Exercise(resultSet.getInt("id_exercise"), resultSet.getString("name"),
+                        resultSet.getString("description")));
             }
         }
-        return esercizi;
+        return exercises;
     }
 
-    public void aggiornaEsercizio(int idEsercizio, String nome, String descrizione) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_ESERCIZIO)) {
-            statement.setString(1, nome);
-            statement.setString(2, descrizione);
-            statement.setInt(3, idEsercizio);
+    public void updateExercise(int exerciseId, String name, String description) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_EXERCISE)) {
+            statement.setString(1, name);
+            statement.setString(2, description);
+            statement.setInt(3, exerciseId);
             statement.executeUpdate();
         }
     }
 
-    public void eliminaEsercizio(int idEsercizio) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.DELETE_ESERCIZIO)) {
-            statement.setInt(1, idEsercizio);
+    public void deleteExercise(int exerciseId) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.DELETE_EXERCISE)) {
+            statement.setInt(1, exerciseId);
             statement.executeUpdate();
         }
     }
@@ -273,13 +262,12 @@ public class DBModel implements Model {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return resultSet.getInt("count") > 0; // Ritorna true se esiste almeno un record con email e
-                                                          // password forniti
+                    return resultSet.getInt("count") > 0;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException("Errore durante la verifica delle credenziali del GM", e);
+            throw new SQLException("Error verifying GM credentials", e);
         }
 
         return false;

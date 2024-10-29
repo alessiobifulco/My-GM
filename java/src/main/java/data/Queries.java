@@ -1,51 +1,58 @@
 package data;
 
 public class Queries {
-    // Query per Firma
-    public static final String INSERT_FIRMA = "INSERT INTO firma (data_firma, id_giocatore, id_contratto) VALUES (?, ?, ?)";
-    public static final String SELECT_FIRME_PER_GIOCATORE = "SELECT * FROM firma WHERE id_giocatore = ?";
-    public static final String UPDATE_DATA_FIRMA = "UPDATE firma SET data_firma = ? WHERE id_giocatore = ? AND id_contratto = ?";
+    // Exercise Queries
+    public static final String INSERT_EXERCISE = "INSERT INTO exercises (name, description) VALUES (?, ?)";
+    public static final String SELECT_ALL_EXERCISES = "SELECT * FROM exercises";
+    public static final String UPDATE_EXERCISE = "UPDATE exercises SET name = ?, description = ? WHERE id_exercise = ?";
+    public static final String DELETE_EXERCISE = "DELETE FROM exercises WHERE id_exercise = ?";
 
-    // Query per Scambio
-    public static final String INSERT_SCAMBIO = "INSERT INTO scambio (id_giocatore_a, id_giocatore_b, id_squadra_a, id_squadra_b, data_scambio, dettagli, stato) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    public static final String SELECT_SCAMBI_BETWEEN_SQUADRE = "SELECT * FROM scambio WHERE id_squadra_a = ? AND id_squadra_b = ?";
-    public static final String UPDATE_STATO_SCAMBIO = "UPDATE scambio SET stato = ? WHERE id_scambio = ?";
+    // Contract Queries
+    public static final String INSERT_CONTRACT = "INSERT INTO contracts (duration, salary, clause, status, contract_date) VALUES (?, ?, ?, ?, ?)";
+    public static final String SELECT_ALL_CONTRACTS = "SELECT * FROM contracts";
+    public static final String UPDATE_CONTRACT = "UPDATE contracts SET duration = ?, salary = ?, clause = ?, status = ?, contract_date = ? WHERE id_contract = ?";
+    public static final String DELETE_CONTRACT = "DELETE FROM contracts WHERE id_contract = ?";
 
-    // Query per Allenamento
-    public static final String INSERT_ALLENAMENTO = "INSERT INTO allenamento (nome, data, tipo, id_squadra) VALUES (?, ?, ?, ?)";
-    public static final String SELECT_ALLENAMENTI_PER_SQUADRA = "SELECT * FROM allenamento WHERE id_squadra = ?";
-    public static final String UPDATE_TIPO_ALLENAMENTO = "UPDATE allenamento SET tipo = ? WHERE id_allenamento = ?";
+    // Signing Queries
+    public static final String INSERT_SIGN = "INSERT INTO signings (sign_date, player_id, contract_id) VALUES (?, ?, ?)";
+    public static final String SELECT_SIGNS_FOR_PLAYER = "SELECT * FROM signings WHERE player_id = ?";
+    public static final String UPDATE_SIGN_DATE = "UPDATE signings SET sign_date = ? WHERE player_id = ? AND contract_id = ?";
+    public static final String DELETE_SIGNING = "DELETE FROM signings WHERE player_id = ? AND contract_id = ?";
 
-    // Query per Giocatore
-    public static final String SELECT_FREE_AGENT = "SELECT * FROM giocatore WHERE freeagent = true";
-    public static final String UPDATE_FREE_AGENT = "UPDATE giocatore SET id_squadra = ?, freeagent = false WHERE id_giocatore = ?";
-    public static final String SELECT_FREE_AGENT_PER_RUOLO = "SELECT * FROM giocatore WHERE freeagent = true AND ruolo = ?";
-    public static final String SELECT_GIOCATORI_PER_SQUADRA = "SELECT * FROM giocatore WHERE id_squadra = ?";
+    // Trade Queries
+    public static final String INSERT_TRADE = "INSERT INTO trades (player_a_id, player_b_id, trade_date, details, status) VALUES (?, ?, ?, ?, ?)";
+    public static final String SELECT_TRADES_BETWEEN_TEAMS = "SELECT * FROM trades WHERE (player_a_id IN (SELECT id FROM players WHERE team_id = ?) AND player_b_id IN (SELECT id FROM players WHERE team_id = ?))";
+    public static final String UPDATE_TRADE_STATUS = "UPDATE trades SET status = ? WHERE id_trade = ?";
 
-    // Query per aggiungere e rimuovere giocatori
-    public static final String INSERT_GIOCATORE = "INSERT INTO giocatore (nome, ruolo, valutazione, freeagent, categoria) VALUES (?, ?, ?, ?, ?)";
-    public static final String DELETE_GIOCATORE = "DELETE FROM giocatore WHERE id_giocatore = ?";
-    public static final String SELECT_GIOCATORE_BY_ID = "SELECT * FROM giocatore WHERE id_giocatore = ?";
-    public static final String UPDATE_VALUTAZIONE_GIOCATORE = "UPDATE giocatore SET valutazione = ? WHERE id_giocatore = ?";
+    // Subscription Queries
+    public static final String INSERT_SUBSCRIPTION = "INSERT INTO subscriptions (contract_id, subscription_date) VALUES (?, ?)";
+    public static final String SELECT_ALL_SUBSCRIPTIONS = "SELECT * FROM subscriptions";
+    public static final String UPDATE_SUBSCRIPTION = "UPDATE subscriptions SET contract_id = ?, subscription_date = ? WHERE id_subscription = ?";
+    public static final String DELETE_SUBSCRIPTION = "DELETE FROM subscriptions WHERE id_subscription = ?";
 
-    // Query per Squadra
-    public static final String SELECT_SQUADRA = "SELECT nome, citta, numero_giocatori, id_gm, id_staff FROM squadra WHERE id_squadra = ?";
+    // Player Queries
+    public static final String SELECT_PLAYER_BY_ID = "SELECT * FROM players WHERE id_player = ?";
+    public static final String SELECT_PLAYERS_BY_TEAM = "SELECT * FROM players WHERE team_id = ?";
+    public static final String UPDATE_PLAYER_RATING = "UPDATE players SET rating = ? WHERE id_player = ?";
+    public static final String SELECT_FREE_AGENTS = "SELECT * FROM players WHERE is_free_agent = TRUE";
 
-    // Query per aggiungere e rimuovere squadre
-    public static final String INSERT_SQUADRA = "INSERT INTO squadra (nome, citta, numero_giocatori, id_gm, id_staff) VALUES (?, ?, ?, ?, ?)";
-    public static final String DELETE_SQUADRA = "DELETE FROM squadra WHERE id_squadra = ?";
+    // Free Agent Queries
+    public static final String UPDATE_FREE_AGENT = "UPDATE players SET team_id = ? WHERE id_player = ?"; // Aggiorna l'associazione di un free agent a un team
 
-    // Query per GM
-    public static final String INSERT_GM = "INSERT INTO gm (nome, email, password) VALUES (?, ?, ?)";
-    public static final String DELETE_GM = "DELETE FROM gm WHERE id_gm = ?";
+    // Team Queries
+    public static final String INSERT_TEAM = "INSERT INTO teams (name, city, number_of_players, id_gm, id_staff) VALUES (?, ?, ?, ?, ?)";
+    public static final String SELECT_ALL_TEAMS = "SELECT * FROM teams";
+    public static final String UPDATE_TEAM = "UPDATE teams SET name = ?, city = ?, number_of_players = ?, id_gm = ?, id_staff = ? WHERE id_team = ?";
+    public static final String DELETE_TEAM = "DELETE FROM teams WHERE id_team = ?";
+    public static final String SELECT_TEAM_BY_ID = "SELECT * FROM teams WHERE id_team = ?"; // Ottiene un team specifico
 
-    // Query per Staff
-    public static final String INSERT_STAFF = "INSERT INTO staff (nome, ruolo) VALUES (?, ?)";
-    public static final String DELETE_STAFF = "DELETE FROM staff WHERE id_staff = ?";
+    // Training Queries
+    public static final String INSERT_TRAINING = "INSERT INTO trainings (name, date, type, team_id) VALUES (?, ?, ?, ?)";
+    public static final String SELECT_TRAININGS_BY_TEAM = "SELECT * FROM trainings WHERE team_id = ?";
+    public static final String UPDATE_TRAINING_TYPE = "UPDATE trainings SET type = ? WHERE training_id = ?";
+    public static final String DELETE_TRAINING = "DELETE FROM trainings WHERE training_id = ?";
 
-    // Query per Esercizio
-    public static final String INSERT_ESERCIZIO = "INSERT INTO esercizio (nome, descrizione) VALUES (?, ?)";
-    public static final String SELECT_ALL_ESERCIZI = "SELECT * FROM esercizio";
-    public static final String UPDATE_ESERCIZIO = "UPDATE esercizio SET nome = ?, descrizione = ? WHERE id_esercizio = ?";
-    public static final String DELETE_ESERCIZIO = "DELETE FROM esercizio WHERE id_esercizio = ?";
+    public static final String SELECT_FREE_AGENTS_BY_ROLE = "SELECT * FROM players WHERE is_free_agent = TRUE AND role = ?"; // Ottiene free agents per ruolo
+
+    
 }

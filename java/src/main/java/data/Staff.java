@@ -1,26 +1,47 @@
 package data;
 
 public class Staff {
-    private int id_staff;
-    private String nome;
-    private String ruolo;
+    private int staffId;
+    private String name;
+    private String role;
     private String email;
 
-    // Costruttore
-    public Staff(int id_staff, String nome, String ruolo, String email) {
-        this.id_staff = id_staff;
-        this.nome = nome;
-        this.ruolo = ruolo;
+    public Staff(int staffId, String name, String role, String email) {
+        this.staffId = staffId;
+        this.name = name;
+        this.role = role;
         this.email = email;
     }
 
-    // Metodi getter e setter
-    public int getIdStaff() { return id_staff; }
-    public void setIdStaff(int id_staff) { this.id_staff = id_staff; }
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-    public String getRuolo() { return ruolo; }
-    public void setRuolo(String ruolo) { this.ruolo = ruolo; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public int getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(int staffId) {
+        this.staffId = staffId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

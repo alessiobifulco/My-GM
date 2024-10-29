@@ -1,6 +1,6 @@
 package data;
 
-public enum Categoria {
+public enum Category {
     SUPERSTAR,
     ALLSTAR,
     ROLEPLAYER,

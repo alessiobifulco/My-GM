@@ -1,46 +1,44 @@
 package data;
 
 public class GM {
-    private int id_gm;          // Identificatore del GM
-    private String nome;        // Nome del GM
-    private String cognome;     // Cognome del GM
-    private String email;       // Email del GM (deve essere unica)
-    private String password;     // Password del GM
-    private int id_squadra;     // Identificatore della squadra (deve essere unica)
+    private int gmId;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private int teamId;
 
-    // Costruttore
-    public GM(int id_gm, String nome, String cognome, String email, String password, int id_squadra) {
-        this.id_gm = id_gm;
-        this.nome = nome;
-        this.cognome = cognome;
+    public GM(int gmId, String firstName, String lastName, String email, String password, int teamId) {
+        this.gmId = gmId;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.id_squadra = id_squadra;
+        this.teamId = teamId;
     }
 
-    // Metodi getter e setter
-    public int getIdGm() {
-        return id_gm;
+    public int getGmId() {
+        return gmId;
     }
 
-    public void setIdGm(int id_gm) {
-        this.id_gm = id_gm;
+    public void setGmId(int gmId) {
+        this.gmId = gmId;
     }
 
-    public String getNome() {
-        return nome;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getCognome() {
-        return cognome;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -59,11 +57,11 @@ public class GM {
         this.password = password;
     }
 
-    public int getIdSquadra() {
-        return id_squadra;
+    public int getTeamId() {
+        return teamId;
     }
 
-    public void setIdSquadra(int id_squadra) {
-        this.id_squadra = id_squadra;
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 }

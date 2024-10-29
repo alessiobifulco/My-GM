@@ -31,3 +31,7 @@
 *.lock
 
 *.probe
+
+*.bin
+
+*.class
