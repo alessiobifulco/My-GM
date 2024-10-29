@@ -1,37 +1,40 @@
-# Ignora le directory di build
-/build/
-*/build/
+# Compiled class file and directories
+*.class
+bin
+build
 
-# Ignora i file di log
+# Log file
 *.log
 
-# Ignora i file temporanei
-*.tmp
-*.temp
+# BlueJ files
+*.ctxt
 
-# Ignora le configurazioni specifiche dell'IDE
-/.idea/
-/*.iml
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
 
-# Ignora i file compilati
-*.class
+# Package Files #
 *.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
 
-# Ignora le directory di output di Gradle
-/.gradle/
-/out/
-# Ignora la directory .gradle
-.gradle/
+# Editor and IDE #
+.vscode
+.idea
+.DS_Store
 
-# Ignora le directory di build
-/build/
-*/build/
+# gradle #
+.gradle
 
-# Ignora i file di blocco di Gradle
-*.lock
-
-*.probe
-
-*.bin
-
-*.class
+# Documentation #
+*.pdf
+*.aux
+*.bbl
+*.blg
+*.out
+*.gz
+*.toc
+*.bak
