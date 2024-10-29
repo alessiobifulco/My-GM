@@ -29,3 +29,5 @@
 
 # Ignora i file di blocco di Gradle
 *.lock
+
+*.probe

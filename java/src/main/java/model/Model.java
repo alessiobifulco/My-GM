@@ -56,4 +56,7 @@ public interface Model {
     void aggiornaEsercizio(int idEsercizio, String nome, String descrizione) throws SQLException;
 
     void eliminaEsercizio(int idEsercizio) throws SQLException;
+
+    // Firma per la verifica credenziali GM
+    boolean verifyGmCredentials(String email, String password) throws SQLException;
 }

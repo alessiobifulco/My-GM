@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class DBModel implements Model{
+public class DBModel implements Model {
 
     private final Connection connection;
 
@@ -175,25 +175,23 @@ public class DBModel implements Model{
     }
 
     // Squadra (solo selezione)
-public Squadra getSquadra(int idSquadra) throws SQLException {
-    try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_SQUADRA)) {
-        statement.setInt(1, idSquadra);
-        try (ResultSet resultSet = statement.executeQuery()) {
-            if (resultSet.next()) {
-                return new Squadra(
-                    idSquadra,
-                    resultSet.getString("nome"),
-                    resultSet.getString("citta"),
-                    resultSet.getInt("numero_giocatori"),
-                    resultSet.getInt("id_gm"),
-                    resultSet.getInt("id_staff")
-                );
+    public Squadra getSquadra(int idSquadra) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_SQUADRA)) {
+            statement.setInt(1, idSquadra);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Squadra(
+                            idSquadra,
+                            resultSet.getString("nome"),
+                            resultSet.getString("citta"),
+                            resultSet.getInt("numero_giocatori"),
+                            resultSet.getInt("id_gm"),
+                            resultSet.getInt("id_staff"));
+                }
             }
         }
+        return null;
     }
-    return null;
-}
-
 
     // Esercizio
     public void inserisciEsercizio(String nome, String descrizione) throws SQLException {
@@ -230,5 +228,27 @@ public Squadra getSquadra(int idSquadra) throws SQLException {
             statement.setInt(1, idEsercizio);
             statement.executeUpdate();
         }
+    }
+
+    @Override
+    public boolean verifyGmCredentials(String email, String password) throws SQLException {
+        String query = "SELECT COUNT(*) AS count FROM gm WHERE email = ? AND password = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+            statement.setString(2, password);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("count") > 0; // Ritorna true se esiste almeno un record con email e
+                                                          // password forniti
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Errore durante la verifica delle credenziali del GM", e);
+        }
+
+        return false;
     }
 }
