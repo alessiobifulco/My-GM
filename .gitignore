@@ -38,3 +38,7 @@ build
 *.gz
 *.toc
 *.bak
+
+*.probe
+*.lock
+*.bin

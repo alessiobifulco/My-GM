@@ -34,7 +34,7 @@ public class LoginPage {
                 String email = emailField.getText();
                 String password = new String(passwordField.getPassword());
                 if (controller.authenticateGm(email, password)) {
-                    new GmPage(frame); // Passa alla GmPage se il login ha successo
+                    new GmPage(frame, controller); // Passa alla GmPage se il login ha successo
                 } else {
                     JOptionPane.showMessageDialog(frame, "Credenziali non valide", "Errore", JOptionPane.ERROR_MESSAGE);
                 }

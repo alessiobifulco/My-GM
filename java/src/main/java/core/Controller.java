@@ -22,7 +22,7 @@ public class Controller {
 
     public boolean authenticateGm(String email, String password) {
         boolean isAuthenticated = false;
-    
+
         try {
             isAuthenticated = model.verifyGmCredentials(email, password);
             
@@ -32,12 +32,10 @@ public class Controller {
                 view.showErrorMessage("Email o password non corretti.");  // Messaggio di errore
             }
         } catch (SQLException e) {
-            // Gestione dell'eccezione
             view.showErrorMessage("Si è verificato un errore durante la verifica delle credenziali: " + e.getMessage());
             e.printStackTrace(); // Stampa lo stack trace per il debug
         }
-    
+
         return isAuthenticated;
     }
-    
 }

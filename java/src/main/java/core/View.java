@@ -1,6 +1,6 @@
 package core;
-import javax.swing.*;
 
+import javax.swing.*;
 import view.AdministratorPage;
 import view.GmPage;
 import view.HomePage;
@@ -12,10 +12,10 @@ public class View {
     private Controller controller;
 
     public View(Runnable onClose) {
-        this.frame = this.createFrame("NBA GM System");
+        this.frame = createFrame("NBA GM System");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setSize(800, 600);
-        frame.setVisible(true);
+        this.frame.setVisible(true);
     }
 
     public void setController(Controller controller) {
@@ -38,7 +38,7 @@ public class View {
 
     // Mostra la GmPage
     public void showGmPage() {
-        new GmPage(frame); // Crea e mostra la GmPage
+        new GmPage(frame, controller); // Crea e mostra la GmPage
     }
 
     // Mostra la pagina dell'amministratore
