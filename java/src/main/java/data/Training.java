@@ -57,7 +57,7 @@ public class Training {
         }
 
         public static void insert(Connection connection, String name, String date, String type, int teamId) {
-            try (var statement = DAOUtils.prepare(connection, Queries.INSERT_TRAINING, name, date, type, teamId)) {
+            try (var statement = DAOUtils.prepare(connection, Queries.CREATE_TRAINING, name, date, type, teamId)) {
                 statement.executeUpdate();
             } catch (Exception e) {
                 throw new DAOException(e);
@@ -66,7 +66,7 @@ public class Training {
 
         public static List<Training> findByTeam(Connection connection, int teamId) {
             List<Training> trainings = new LinkedList<>();
-            try (var statement = DAOUtils.prepare(connection, Queries.SELECT_TRAININGS_BY_TEAM, teamId);
+            try (var statement = DAOUtils.prepare(connection, Queries.READ_TRAININGS_BY_TEAM, teamId);
                  var resSet = statement.executeQuery()) {
                 while (resSet.next()) {
                     trainings.add(Training.DAO.create(resSet));

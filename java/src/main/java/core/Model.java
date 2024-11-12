@@ -20,7 +20,7 @@ public interface Model {
     void updateSigningDate(String signingDate, int playerId, int contractId) throws SQLException;
 
     void tradePlayers(int playerAId, int playerBId, int teamAId, int teamBId,
-                      String tradeDate, String details, String status) throws SQLException;
+            String tradeDate, String details, String status) throws SQLException;
 
     List<Trade> getTradesBetweenTeams(int teamAId, int teamBId) throws SQLException;
 
@@ -51,4 +51,11 @@ public interface Model {
     void deleteExercise(int exerciseId) throws SQLException;
 
     boolean verifyGmCredentials(String email, String password) throws SQLException;
+
+    List<Trade> getAllTrades() throws SQLException;
+
+    List<Sign> getAllSigns() throws SQLException;
+
+    List<Player> getAllPlayers() throws SQLException;
+
 }

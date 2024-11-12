@@ -22,7 +22,7 @@ public class DBModel implements Model {
     }
 
     public void signPlayer(String signingDate, int playerId, int contractId) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.INSERT_SIGN)) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.CREATE_SIGN)) {
             statement.setString(1, signingDate);
             statement.setInt(2, playerId);
             statement.setInt(3, contractId);
@@ -32,12 +32,13 @@ public class DBModel implements Model {
 
     public List<Sign> getSigningsForPlayer(int playerId) throws SQLException {
         List<Sign> signings = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_SIGNS_FOR_PLAYER)) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.READ_SIGN_BY_PLAYER)) {
             statement.setInt(1, playerId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    signings.add(new Sign(resultSet.getInt("id_signing"), resultSet.getString("signing_date"), playerId,
+                    signings.add(new Sign(resultSet.getInt("id_signing"), resultSet.getString("sign_date"), playerId,
                             resultSet.getInt("contract_id")));
+
                 }
             }
         }
@@ -54,8 +55,8 @@ public class DBModel implements Model {
     }
 
     public void tradePlayers(int playerAId, int playerBId, int teamAId, int teamBId, String tradeDate,
-                             String details, String status) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.INSERT_TRADE)) {
+            String details, String status) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.CREATE_TRADE)) {
             statement.setInt(1, playerAId);
             statement.setInt(2, playerBId);
             statement.setInt(3, teamAId);
@@ -69,7 +70,7 @@ public class DBModel implements Model {
 
     public List<Trade> getTradesBetweenTeams(int teamAId, int teamBId) throws SQLException {
         List<Trade> trades = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_TRADES_BETWEEN_TEAMS)) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.READ_TRADES_BETWEEN_TEAMS)) {
             statement.setInt(1, teamAId);
             statement.setInt(2, teamBId);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -92,7 +93,7 @@ public class DBModel implements Model {
     }
 
     public void insertTraining(String name, String date, String type, int teamId) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.INSERT_TRAINING)) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.CREATE_TRAINING)) {
             statement.setString(1, name);
             statement.setString(2, date);
             statement.setString(3, type);
@@ -103,7 +104,7 @@ public class DBModel implements Model {
 
     public List<Training> getTrainingsByTeam(int teamId) throws SQLException {
         List<Training> trainings = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_TRAININGS_BY_TEAM)) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.READ_TRAININGS_BY_TEAM)) {
             statement.setInt(1, teamId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -125,8 +126,8 @@ public class DBModel implements Model {
 
     public List<Player> getFreeAgents() throws SQLException {
         List<Player> freeAgents = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_FREE_AGENTS);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.READ_FREE_AGENTS);
+                ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 String categoryStr = resultSet.getString("category");
                 Category category = Category.valueOf(categoryStr.toUpperCase());
@@ -137,15 +138,14 @@ public class DBModel implements Model {
                         categoryStr,
                         resultSet.getDouble("rating"),
                         true,
-                        category
-                ));
+                        category));
             }
         }
         return freeAgents;
     }
 
     public void associateFreeAgent(int playerId, int teamId) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_FREE_AGENT)) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_PLAYER_TEAM)) {
             statement.setInt(1, teamId);
             statement.setInt(2, playerId);
             statement.executeUpdate();
@@ -154,7 +154,7 @@ public class DBModel implements Model {
 
     public List<Player> getFreeAgentsByRole(String role) throws SQLException {
         List<Player> freeAgents = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_FREE_AGENTS_BY_ROLE)) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.READ_FREE_AGENTS_BY_ROLE)) {
             statement.setString(1, role);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -167,8 +167,7 @@ public class DBModel implements Model {
                             role,
                             resultSet.getDouble("rating"),
                             true,
-                            category
-                    ));
+                            category));
                 }
             }
         }
@@ -177,7 +176,7 @@ public class DBModel implements Model {
 
     public List<Player> getPlayersByTeam(int teamId) throws SQLException {
         List<Player> players = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_PLAYERS_BY_TEAM)) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.READ_PLAYERS_BY_TEAM)) {
             statement.setInt(1, teamId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -190,8 +189,7 @@ public class DBModel implements Model {
                             categoryStr,
                             resultSet.getDouble("rating"),
                             false,
-                            category
-                    ));
+                            category));
                 }
             }
         }
@@ -199,7 +197,7 @@ public class DBModel implements Model {
     }
 
     public Team getTeam(int teamId) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_TEAM_BY_ID)) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.READ_TEAM_BY_ID)) {
             statement.setInt(1, teamId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -208,8 +206,8 @@ public class DBModel implements Model {
                             resultSet.getString("name"),
                             resultSet.getString("city"),
                             resultSet.getInt("number_of_players"),
-                            resultSet.getInt("id_gm"),
-                            resultSet.getInt("id_staff"));
+                            resultSet.getInt("gm_id"),
+                            resultSet.getInt("staff_id"));
                 }
             }
         }
@@ -217,7 +215,7 @@ public class DBModel implements Model {
     }
 
     public void insertExercise(String name, String description) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(Queries.INSERT_EXERCISE)) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.CREATE_EXERCISE)) {
             statement.setString(1, name);
             statement.setString(2, description);
             statement.executeUpdate();
@@ -226,8 +224,8 @@ public class DBModel implements Model {
 
     public List<Exercise> getAllExercises() throws SQLException {
         List<Exercise> exercises = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(Queries.SELECT_ALL_EXERCISES);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.READ_ALL_EXERCISES);
+                ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 exercises.add(new Exercise(resultSet.getInt("id_exercise"), resultSet.getString("name"),
                         resultSet.getString("description")));
@@ -245,6 +243,7 @@ public class DBModel implements Model {
         }
     }
 
+    @Override
     public void deleteExercise(int exerciseId) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(Queries.DELETE_EXERCISE)) {
             statement.setInt(1, exerciseId);
@@ -254,22 +253,67 @@ public class DBModel implements Model {
 
     @Override
     public boolean verifyGmCredentials(String email, String password) throws SQLException {
-        String query = "SELECT COUNT(*) AS count FROM gm WHERE email = ? AND password = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.VERIFY_GM_CREDENTIALS)) {
             statement.setString(1, email);
             statement.setString(2, password);
-
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getInt("count") > 0;
-                }
+                return resultSet.next() && resultSet.getInt("count") > 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException("Error verifying GM credentials", e);
         }
-
-        return false;
     }
+
+    @Override
+    public List<Trade> getAllTrades() throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.READ_ALL_TRADES);
+                ResultSet resultSet = statement.executeQuery()) {
+
+            List<Trade> trades = new ArrayList<>();
+            while (resultSet.next()) {
+                Trade trade = Trade.DAO.create(resultSet);
+                trades.add(trade);
+            }
+            return trades;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error retrieving all trades", e);
+        }
+    }
+
+    @Override
+    public List<Sign> getAllSigns() throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.READ_ALL_SIGN);
+                ResultSet resultSet = statement.executeQuery()) {
+
+            List<Sign> signs = new ArrayList<>();
+            while (resultSet.next()) {
+                Sign sign = Sign.DAO.create(resultSet);
+                signs.add(sign);
+            }
+            return signs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error retrieving all signs", e);
+        }
+    }
+
+    @Override
+    public List<Player> getAllPlayers() throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(Queries.READ_ALL_PLAYERS);
+                ResultSet resultSet = statement.executeQuery()) {
+
+            List<Player> players = new ArrayList<>();
+            while (resultSet.next()) {
+                Player player = Player.DAO.create(resultSet);
+                players.add(player);
+            }
+            return players;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException("Error retrieving all players", e);
+        }
+    }
+
 }

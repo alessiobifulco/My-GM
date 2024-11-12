@@ -43,7 +43,7 @@ public class Exercise {
         }
 
         public static void insert(Connection connection, String name, String description) {
-            try (var statement = DAOUtils.prepare(connection, Queries.INSERT_EXERCISE, name, description)) {
+            try (var statement = DAOUtils.prepare(connection, Queries.CREATE_EXERCISE, name, description)) {
                 statement.executeUpdate();
             } catch (Exception e) {
                 throw new DAOException(e);
@@ -52,7 +52,7 @@ public class Exercise {
 
         public static List<Exercise> findAll(Connection connection) {
             List<Exercise> exercises = new LinkedList<>();
-            try (var statement = DAOUtils.prepare(connection, Queries.SELECT_ALL_EXERCISES);
+            try (var statement = DAOUtils.prepare(connection, Queries.READ_ALL_EXERCISES);
                  var resSet = statement.executeQuery()) {
                 while (resSet.next()) {
                     exercises.add(Exercise.DAO.create(resSet));

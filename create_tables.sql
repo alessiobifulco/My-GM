@@ -4,109 +4,109 @@ CREATE DATABASE IF NOT EXISTS NBA_System;
 -- Selezione del database NBA_System
 USE NBA_System;
 
--- Creazione della tabella gm
-CREATE TABLE IF NOT EXISTS gm (
+-- Creazione della tabella general_managers (gm)
+CREATE TABLE IF NOT EXISTS GM (
     id_gm INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    cognome VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    surname VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
-    id_squadra INT UNIQUE
+    team_id INT UNIQUE
 );
 
--- Creazione della tabella staff
+-- Creazione della tabella staff_members (staff)
 CREATE TABLE IF NOT EXISTS staff (
     id_staff INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    ruolo VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    role VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL
 );
 
--- Creazione della tabella squadra
-CREATE TABLE IF NOT EXISTS squadra (
-    id_squadra INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    città VARCHAR(100) NOT NULL,
-    numero_giocatori INT DEFAULT 0,
-    id_gm INT,
-    id_staff INT,
-    FOREIGN KEY (id_gm) REFERENCES gm(id_gm),
-    FOREIGN KEY (id_staff) REFERENCES staff(id_staff)
+-- Creazione della tabella teams
+CREATE TABLE IF NOT EXISTS team (
+    id_team INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    number_of_players INT DEFAULT 0,
+    gm_id INT,
+    staff_id INT,
+    FOREIGN KEY (gm_id) REFERENCES GM(id_gm),
+    FOREIGN KEY (staff_id) REFERENCES staff(id_staff)
 );
 
--- Creazione della tabella giocatore
-CREATE TABLE IF NOT EXISTS giocatore (
-    id_giocatore INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    cognome VARCHAR(100) NOT NULL,
-    età INT NOT NULL,
-    posizione VARCHAR(50),
-    esperienza INT,
-    valutazione INT,
-    freeagent BOOLEAN DEFAULT TRUE,
-    id_squadra INT,
-    categoria VARCHAR(50), -- Aggiunta della colonna categoria
-    FOREIGN KEY (id_squadra) REFERENCES squadra(id_squadra)
+-- Creazione della tabella players
+CREATE TABLE IF NOT EXISTS player (
+    id_player INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    surname VARCHAR(100) NOT NULL,
+    age INT NOT NULL,
+    role VARCHAR(50),
+    experience INT,
+    rating INT,
+    is_free_agent BOOLEAN DEFAULT TRUE,
+    team_id INT,
+    category VARCHAR(50),
+    FOREIGN KEY (team_id) REFERENCES team(id_team)
 );
 
--- Creazione della tabella contratto
-CREATE TABLE IF NOT EXISTS contratto (
-    id_contratto INT AUTO_INCREMENT PRIMARY KEY,
-    durata INT NOT NULL,
-    stipendio DECIMAL(10, 2) NOT NULL,
-    clausola TEXT,
-    stato VARCHAR(50),
-    data_contratto DATE
+-- Creazione della tabella contracts
+CREATE TABLE IF NOT EXISTS contracts (
+    id_contract INT AUTO_INCREMENT PRIMARY KEY,
+    duration INT NOT NULL,
+    salary DECIMAL(10, 2) NOT NULL,
+    clause TEXT,
+    status VARCHAR(50),
+    contract_date DATE
 );
 
--- Creazione della tabella firma
-CREATE TABLE IF NOT EXISTS firma (
-    id_firma INT AUTO_INCREMENT PRIMARY KEY,
-    data_firma DATE,
-    id_giocatore INT,
-    id_contratto INT,
-    FOREIGN KEY (id_giocatore) REFERENCES giocatore(id_giocatore),
-    FOREIGN KEY (id_contratto) REFERENCES contratto(id_contratto)
+-- Creazione della tabella sign (precedentemente signing)
+CREATE TABLE IF NOT EXISTS sign (
+    id_signing INT AUTO_INCREMENT PRIMARY KEY,
+    sign_date DATE,
+    player_id INT,
+    contract_id INT,
+    FOREIGN KEY (player_id) REFERENCES player(id_player),
+    FOREIGN KEY (contract_id) REFERENCES contracts(id_contract)
 );
 
--- Creazione della tabella sottoscrizione
-CREATE TABLE IF NOT EXISTS sottoscrizione (
-    id_sottoscrizione INT AUTO_INCREMENT PRIMARY KEY,
-    id_contratto INT,
-    data_sottoscrizione DATE,
-    FOREIGN KEY (id_contratto) REFERENCES contratto(id_contratto)
+-- Creazione della tabella subscriptions
+CREATE TABLE IF NOT EXISTS subscription (
+    id_subscription INT AUTO_INCREMENT PRIMARY KEY,
+    contract_id INT,
+    subscription_date DATE,
+    FOREIGN KEY (contract_id) REFERENCES contracts(id_contract)
 );
 
--- Creazione della tabella scambio
-CREATE TABLE IF NOT EXISTS scambio (
-    id_scambio INT AUTO_INCREMENT PRIMARY KEY,
-    id_giocatore_a INT,
-    id_giocatore_b INT,
-    id_squadra_a INT,
-    id_squadra_b INT,
-    data DATE,
-    dettagli TEXT,
-    stato VARCHAR(50),
-    FOREIGN KEY (id_giocatore_a) REFERENCES giocatore(id_giocatore),
-    FOREIGN KEY (id_giocatore_b) REFERENCES giocatore(id_giocatore),
-    FOREIGN KEY (id_squadra_a) REFERENCES squadra(id_squadra),
-    FOREIGN KEY (id_squadra_b) REFERENCES squadra(id_squadra)
+-- Creazione della tabella trades
+CREATE TABLE IF NOT EXISTS trade (
+    id_trade INT AUTO_INCREMENT PRIMARY KEY,
+    player_a_id INT,
+    player_b_id INT,
+    team_a_id INT,
+    team_b_id INT,
+    trade_date DATE,
+    details TEXT,
+    status VARCHAR(50),
+    FOREIGN KEY (player_a_id) REFERENCES player(id_player),
+    FOREIGN KEY (player_b_id) REFERENCES player(id_player),
+    FOREIGN KEY (team_a_id) REFERENCES team(id_team),
+    FOREIGN KEY (team_b_id) REFERENCES team(id_team)
 );
 
--- Creazione della tabella allenamento
-CREATE TABLE IF NOT EXISTS allenamento (
-    id_allenamento INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100),
-    data DATE,
-    tipo VARCHAR(50),
-    id_squadra INT,
-    FOREIGN KEY (id_squadra) REFERENCES squadra(id_squadra)
+-- Creazione della tabella training
+CREATE TABLE IF NOT EXISTS training (
+    id_training INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    date DATE,
+    type VARCHAR(50),
+    team_id INT,
+    FOREIGN KEY (team_id) REFERENCES team(id_team)
 );
 
--- Creazione della tabella esercizio
-CREATE TABLE IF NOT EXISTS esercizio (
-    id_esercizio INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100),
-    descrizione TEXT,
-    difficoltà VARCHAR(50)
+-- Creazione della tabella exercise
+CREATE TABLE IF NOT EXISTS exercise (
+    id_exercise INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    description TEXT,
+    difficulty VARCHAR(50)
 );

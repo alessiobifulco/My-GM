@@ -36,21 +36,20 @@ public class Sign {
     }
 
     public static final class DAO {
-        private static Sign create(ResultSet resSet) {
+        public static Sign create(ResultSet resSet) {
             try {
                 return new Sign(
-                    resSet.getInt("id_firma"),
-                    resSet.getString("data_firma"),
-                    resSet.getInt("id_giocatore"),
-                    resSet.getInt("id_contratto")
-                );
+                        resSet.getInt("id_signing"), // Usa id_signing invece di id_firma
+                        resSet.getString("sign_date"), // Usa sign_date invece di data_firma
+                        resSet.getInt("player_id"), // Usa player_id
+                        resSet.getInt("contract_id")); // Usa contract_id
             } catch (SQLException e) {
                 throw new DAOException(e);
             }
         }
 
         public static void insert(Connection connection, String signDate, int playerId, int contractId) {
-            try (var statement = DAOUtils.prepare(connection, Queries.INSERT_SIGN, signDate, playerId, contractId)) {
+            try (var statement = DAOUtils.prepare(connection, Queries.CREATE_SIGN, signDate, playerId, contractId)) {
                 statement.executeUpdate();
             } catch (Exception e) {
                 throw new DAOException(e);
@@ -59,8 +58,8 @@ public class Sign {
 
         public static List<Sign> findByPlayer(Connection connection, int playerId) {
             List<Sign> signs = new LinkedList<>();
-            try (var statement = DAOUtils.prepare(connection, Queries.SELECT_SIGNS_FOR_PLAYER, playerId);
-                 var resSet = statement.executeQuery()) {
+            try (var statement = DAOUtils.prepare(connection, Queries.READ_SIGN_BY_PLAYER, playerId);
+                    var resSet = statement.executeQuery()) {
                 while (resSet.next()) {
                     signs.add(Sign.DAO.create(resSet));
                 }
@@ -71,11 +70,26 @@ public class Sign {
         }
 
         public static void updateSignDate(Connection connection, String signDate, int playerId, int contractId) {
-            try (var statement = DAOUtils.prepare(connection, Queries.UPDATE_SIGN_DATE, signDate, playerId, contractId)) {
+            try (var statement = DAOUtils.prepare(connection, Queries.UPDATE_SIGN_DATE, signDate, playerId,
+                    contractId)) {
                 statement.executeUpdate();
             } catch (Exception e) {
                 throw new DAOException(e);
             }
         }
+
+        public static List<Sign> findAll(Connection connection) {
+            List<Sign> signs = new LinkedList<>();
+            try (var statement = connection.prepareStatement(Queries.READ_ALL_SIGN);
+                    var resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    signs.add(create(resultSet));
+                }
+            } catch (Exception e) {
+                throw new DAOException(e);
+            }
+            return signs;
+        }
     }
+
 }
